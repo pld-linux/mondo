@@ -177,7 +177,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mondo/mondoarchive
 %{_datadir}/mondo/autorun
 %{_mandir}/man8/mondoarchive.8*
-%{_libdir}
+%{_libdir}/lib*.so.*.*
 
 %if %{with xmondo}
 %files xmondo
