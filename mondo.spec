@@ -6,7 +6,10 @@
 %define	libversion	2.0x_cvs
 %define	__ln		ln
 
-%bcond_with	xmondo
+#
+# Conditional build:
+%bcond_with	xmondo	# build xmondo
+#
 
 Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
 Summary(es):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
