@@ -1,15 +1,11 @@
 # TODO:
 #	fix broken fr description encoding
+#	add/remove R and BR
 #	fix duplicates in %{_libdir} in main/xmondo
 #	missing dep: mindi - not in PLD
 
-%define	libversion	2.0x_cvs
+%define	libversion	2.0
 %define	__ln		ln
-
-#
-# Conditional build:
-%bcond_with	xmondo	# build xmondo
-#
 
 Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
 Summary(es):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
@@ -23,10 +19,10 @@ License:	GPL
 Group:		Applications/Archiving
 Source0:	http://www.microwerks.net/~hugo/download/MondoCD/TGZS/%{name}-%{version}.tgz
 # Source0-md5:	91fa9d499c93d9fd535d84d7963bbbd8
+Patch0:		%{name}_lqt-mt.patch
 URL:		http://www.microwerks.net/~hugo/index.html
 BuildRequires:	newt-devel >= 0.50
 BuildRequires:	slang-devel >= 1.4.1
-%if %{with xmondo}
 BuildRequires:	XFree86-devel
 BuildRequires:	arts-devel
 BuildRequires:	gcc-c++
@@ -34,7 +30,7 @@ BuildRequires:	kdelibs-devel
 BuildRequires:	libart_lgpl-devel
 BuildRequires:	libpng-devel
 BuildRequires:	qt-devel
-%endif
+BuildRequires:	qt-st-devel
 Requires:	afio
 Requires:	bzip2 >= 0.9
 Requires:	cdrtools-mkisofs
@@ -112,6 +108,7 @@ Pliki nag³ówkowe bibliotek mondo.
 
 %prep
 %setup -q
+%patch0 -p1
 # clear out any CVS directories if they exist
 #for dir in `find . -name CVS`
 #do
@@ -119,8 +116,7 @@ Pliki nag³ówkowe bibliotek mondo.
 #tdone
 
 %build
-%configure \
-	%{?with_xmondo:--with-x11}
+%configure --with-x11
 
 %{__make} \
 	VERSION=%{version} \
@@ -135,26 +131,17 @@ for fname in mondo/mondoarchive/.libs/mondoarchive mondo/mondorestore/.libs/mond
 	install $fname $RPM_BUILD_ROOT%{_sbindir}
 	install $fname $RPM_BUILD_ROOT%{_datadir}/mondo
 done
-%if %{with xmondo}
 install mondo/xmondo/.libs/xmondo $RPM_BUILD_ROOT%{_sbindir}
-%endif
 
 for f in libmondo libmondo.so libmondo-newt libmondo-newt.so libmondo-newt.1 libmondo-newt.so.1 libmondo-newt.1.0.0 libmondo-newt.so.1.0.0 libmondo.2 libmondo.so.2 libmondo.2.0.3 libmondo.so.2.0.3 ; do
 	fname=mondo/common/.libs/$f
 	if [ -e "$fname" ]; then
-# Hugo's way
-		install $fname $RPM_BUILD_ROOT%{_libdir}
-# ----------
-# Joshua's way
-#		cp -d $fname $RPM_BUILD_ROOT%{_libdir}
-# ----------
+install $fname $RPM_BUILD_ROOT%{_libdir}
 	fi
 done
-%if %{with xmondo}
-install mondo/common/.libs/libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}
-ln -s libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}/libXmondo.so
+#install mondo/common/.libs/libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}
+ln -s libXmondo-1.0.so $RPM_BUILD_ROOT%{_libdir}/libXmondo.so
 install mondo/xmondo/mondo.png $RPM_BUILD_ROOT%{_datadir}/mondo
-%endif
 install mondo/do-not-compress-these $RPM_BUILD_ROOT%{_datadir}/mondo
 install mondo/autorun $RPM_BUILD_ROOT%{_datadir}/mondo
 install mondo/mondoarchive/mondoarchive.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -187,18 +174,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mondo/autorun
 %{_mandir}/man8/mondoarchive.8*
 
-%if %{with xmondo}
 %files xmondo
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/xmondo
-%attr(755,root,root) %{_libdir}/libXmondo-%{libversion}.so
+%attr(755,root,root) %{_libdir}/libXmondo*.so
 %{_datadir}/mondo/mondo.png
-%endif
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmondo*.so
-%if %{with xmondo}
 %attr(755,root,root) %{_libdir}/libXmondo.so
-%endif
 %{_includedir}/mondo
