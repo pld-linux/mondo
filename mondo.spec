@@ -22,7 +22,7 @@ URL:		http://www.microwerks.net/~hugo/index.html
 BuildRequires:	gcc
 BuildRequires:	newt-devel >= 0.50
 BuildRequires:	slang-devel >= 1.4.1
-%if {?with xmondo}
+%if %{with xmondo}
 BuildRequires:	X11-devel
 BuildRequires:	arts-devel
 BuildRequires:	gcc-c++
