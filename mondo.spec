@@ -5,7 +5,7 @@
 %define	libversion	2.0x_cvs
 %define	__ln		ln
 
-%bcond	with_xmondo
+%bcond_with xmondo
 
 Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
 Summary(fr):	mondo - un programme pour les utilisateurs de Linux pour cr�r un CD/tape de sauvegarde/restauration
