@@ -177,7 +177,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ChangeLog mondo/docs/en/*
 %attr(755,root,root) %{_sbindir}/mondo*
-%attr(755,root,root) %{_libdir}/libmondo*.so.*.*
+%attr(755,root,root) %{_libdir}/libmondo*.so.*
 %dir %{_datadir}/mondo
 %{_datadir}/mondo/mondorestore
 %{_datadir}/mondo/post-nuke.sample
