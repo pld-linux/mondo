@@ -1,65 +1,67 @@
-#%define _prefix /usr
-%define libversion 2.0x_cvs
-%define __ln ln
-%define _without_xmondo yes
+# TODO:
+#	fix broken fr description encoding
 
-Summary:	A program which a Linux user can utilize to create a rescue/restore CD/tape.
-Summary(fr):	Un programme pour les utilisateurs de Linux pour crï¿½r un CD/tape de sauvegarde/restauration
-Summary(it):	Un programma per utenti Linux per creare un CD/tape di rescue
-Summary(sp):	Un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate.
-Summary(pl):	Program do tworzenia kopi zapasowych na CD/tasmie i odtwarzania z nich
+#%define	_prefix	/usr
+%define	libversion	2.0x_cvs
+%define	__ln		ln
+
+%bcond	with_xmondo
+
+Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
+Summary(fr):	mondo - un programme pour les utilisateurs de Linux pour crï¿½r un CD/tape de sauvegarde/restauration
+Summary(it):	mondo - un programma per utenti Linux per creare un CD/tape di rescue
+Summary(sp):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
+Summary(pl):	mondo - program do tworzenia kopii zapasowych na CD/ta¶mie i odtwarzania z nich
 Name:		mondo
 Version:	2.10
 Release:	1
 License:	GPL
 Group:		Applications/Archiving
-Url:		http://www.microwerks.net/~hugo/index.html
 Source0:	http://www.microwerks.net/~hugo/download/MondoCD/TGZS/%{name}-%{version}.tgz
-BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
+URL:		http://www.microwerks.net/~hugo/index.html
+BuildRequires:	gcc
 BuildRequires:	newt-devel >= 0.50
 BuildRequires:	slang-devel >= 1.4.1
-BuildRequires:	gcc
-
-Requires:	cdrtools-mkisofs
-Requires:	cdrtools-cdrecord
-Requires:	parted
+%if {?with xmondo}
+BuildRequires:	X11-devel
+BuildRequires:	arts-devel
+BuildRequires:	gcc-c++
+BuildRequires:	kdelibs-devel
+BuildRequires:	libart_lgpl-devel
+BuildRequires:	libpng-devel
+BuildRequires:	qt-devel
+%endif
 Requires:	afio
-Requires:	slang >= 1.4.1
-Requires:	newt >= 0.50
 Requires:	binutils
 Requires:	bzip2 >= 0.9
-Requires:	mindi >= 1.10
-Requires:	syslinux >= 1.52
-#Requires:   buffer
-%{!?_without_xmondo:BuildRequires:    gcc-c++, X11-devel, qt-devel, kdelibs-devel, arts-devel, libart_lgpl-devel, libpng-devel}
+Requires:	cdrtools-mkisofs
+Requires:	cdrtools-cdrecord
 %ifarch ia64
 Requires:	elilo
-
 %endif
+Requires:	mindi >= 1.10
+Requires:	newt >= 0.50
+Requires:	parted
+Requires:	slang >= 1.4.1
+Requires:	syslinux >= 1.52
+#Requires:	buffer
 Autoreq:	0
-
-%package xmondo
-Summary:	A QT based graphical front end for %{name}
-Summary(pl):    Graficzna nak³adka oparta o QT do mondoarchive.
-
-Group:		Applications/Archiving
-Requires:	%{name} = %{version}-${release}, qt, kdelibs
-
-%package devel
-Summary:	Header files for building against Mondo
-Summary(pl):    Pliki nag³ówkowe bibliotek Mondo
-
-Group:		Development/Libraries
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Objective """"""""" To produce a program which any Linux user can
+Objective """"""""" to produce a program which any Linux user can
 utilize to create a rescue/restore CD (or CDs, if their installation
 is >2Gb approx.). Also works for tapes and NFS.
 
 %description -l pl
-Program do robienia kopii zapasowych. Wspó³pracuje z CD-R(RW),streamerami
-,NFS, LVM, RAID, ext2, ext3, JFS, XFS, ReiserFS, VFAT, NTFS.
+Program do robienia kopii zapasowych. Wspó³pracuje z CD-R(RW),
+streamerami, NFS, LVM, RAID, ext2, ext3, JFS, XFS, ReiserFS, VFAT,
+NTFS.
+
+%description -l es
+Objectivo """"""""" Mondo es un programa que permite cualquier usuario
+de Linux a crear una CD de restoracion/rescate (o CDs, si su
+instalacion es >2GO aprox.). Funciona con cintas y NFS, tambien.
 
 %description -l fr
 Objectif """""""" Mondo a pour but de fournir un programme utilisable
@@ -74,27 +76,34 @@ Linux di creare un cd di rescue/restore (o piu' cd qualora
 l'installazione dovesse occupare piu' di 2Gb circa). Funziona con gli
 azionamenti di nastro, ed il NFS, anche.
 
-%description -l sp
-Objectivo """"""""" Mondo es un programa que permite cualquier usuario
-de Linux a crear una CD de restoracion/rescate (o CDs, si su
-instalacion es >2GO aprox.). Funciona con cintas y NFS, tambien.
+%package xmondo
+Summary:	A QT based graphical front end for mondo
+Summary(pl):    Graficzna nak³adka do mondoarchive oparta o QT
+Group:		Applications/Archiving
+Requires:	kdelibs
+Requires:	%{name} = %{version}-%{release}
+Requires:	qt
 
 %description xmondo
 Xmondo is a QT based graphical frontend to mondoarchive. It can help
 you set up a backup by following onscreen prompts.
 
 %description xmondo -l pl
-Xmondo jest graficzn± nak³adk± opart± o QT do mondoarchive.
+Xmondo jest graficzn± nak³adk± do mondoarchive opart± o QT.
+
+%package devel
+Summary:	Header files for building against mondo
+Summary(pl):    Pliki nag³ówkowe bibliotek mondo
+Group:		Development/Libraries
 
 %description devel
 mondo-devel contains a few header files that are necessary for
 developing with mondo.
 
 %description devel -l pl
-pliki nag³ówkowe bibliotek mondo.
+Pliki nag³ówkowe bibliotek mondo.
 
 %prep
-
 %setup -q
 # clear out any CVS directories if they exist
 #for dir in `find . -name CVS`
@@ -102,55 +111,57 @@ pliki nag³ówkowe bibliotek mondo.
 #  rm -rf ${dir}
 #tdone
 
-%configure %{!?_without_xmondo:--with-x11}
-
 %build
-%{__make} VERSION=%{version} CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_REENTRANT"
+%configure \
+	%{?with_xmondo:--with-x11}
+
+%{__make} \
+	VERSION=%{version} \
+	CFLAGS="-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_REENTRANT"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__mkdir} -p $RPM_BUILD_ROOT%{_datadir}/mondo
-%{__mkdir} -p $RPM_BUILD_ROOT%{_includedir}/mondo
-%{__mkdir} -p $RPM_BUILD_ROOT%{_sbindir}
-%{__mkdir} -p $RPM_BUILD_ROOT%{_libdir}
-%{__mkdir} -p $RPM_BUILD_ROOT%{_mandir}/man8
-for fname in mondo/mondoarchive/.libs/mondoarchive mondo/mondorestore/.libs/mondorestore ; do
-    %{__install} -m 644 $fname $RPM_BUILD_ROOT%{_sbindir}
-    %{__install} -m 644 $fname $RPM_BUILD_ROOT%{_datadir}/mondo
+install -d $RPM_BUILD_ROOT{%{_datadir}/mondo,%{_includedir}/mondo,%{_sbindir}} \
+	$RPM_BUILD_ROOT{%{_libdir},%{_mandir}/man8}
+
+for fname in mondo/mondoarchive/.libs/mondoarchive mondo/mondorestore/.libs/mondorestore; do
+	install $fname $RPM_BUILD_ROOT%{_sbindir}
+	install $fname $RPM_BUILD_ROOT%{_datadir}/mondo
 done
-%{!?_without_xmondo:%{__install} -m 644 mondo/xmondo/.libs/xmondo $RPM_BUILD_ROOT%{_sbindir}}
+%if %{with xmondo}
+install mondo/xmondo/.libs/xmondo $RPM_BUILD_ROOT%{_sbindir}
+%endif
 
 for f in libmondo libmondo.so libmondo-newt libmondo-newt.so libmondo-newt.1 libmondo-newt.so.1 libmondo-newt.1.0.0 libmondo-newt.so.1.0.0 libmondo.2 libmondo.so.2 libmondo.2.0.3 libmondo.so.2.0.3 ; do
-    fname=mondo/common/.libs/$f
-    if [ -e "$fname" ] ; then
-
+	fname=mondo/common/.libs/$f
+	if [ -e "$fname" ]; then
 # Hugo's way
-        %{__install} -m 655 $fname $RPM_BUILD_ROOT%{_libdir}
+		install $fname $RPM_BUILD_ROOT%{_libdir}
 # ----------
 # Joshua's way
-#         %{__cp} -d $fname $RPM_BUILD_ROOT%{_libdir}
+#		cp -d $fname $RPM_BUILD_ROOT%{_libdir}
 # ----------
-
-    fi
+	fi
 done
-%{!?_without_xmondo:%{__install} -m 755 mondo/common/.libs/libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}}
-%{!?_without_xmondo:%{__ln} -s libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}/libXmondo.so}
-%{!?_without_xmondo:%{__install} -m 644 mondo/xmondo/mondo.png $RPM_BUILD_ROOT%{_datadir}/mondo}
-%{__install} -m 755 mondo/do-not-compress-these       $RPM_BUILD_ROOT%{_datadir}/mondo
-%{__install} -m 755 mondo/autorun                     $RPM_BUILD_ROOT%{_datadir}/mondo
-%{__install} -m 644 mondo/mondoarchive/mondoarchive.8 $RPM_BUILD_ROOT%{_mandir}/man8
-gzip -9 -f $RPM_BUILD_ROOT%{_mandir}/man8/mondoarchive.8
-%{__cp} -Rf mondo/restore-scripts  $RPM_BUILD_ROOT%{_datadir}/mondo
-%{__cp} -Rf mondo/post-nuke.sample $RPM_BUILD_ROOT%{_datadir}/mondo
+%if %{with xmondo}
+install mondo/common/.libs/libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}
+ln -s libXmondo-%{libversion}.so $RPM_BUILD_ROOT%{_libdir}/libXmondo.so
+install mondo/xmondo/mondo.png $RPM_BUILD_ROOT%{_datadir}/mondo
+%endif
+install mondo/do-not-compress-these $RPM_BUILD_ROOT%{_datadir}/mondo
+install mondo/autorun $RPM_BUILD_ROOT%{_datadir}/mondo
+install mondo/mondoarchive/mondoarchive.8 $RPM_BUILD_ROOT%{_mandir}/man8
+cp -Rf mondo/restore-scripts $RPM_BUILD_ROOT%{_datadir}/mondo
+cp -Rf mondo/post-nuke.sample $RPM_BUILD_ROOT%{_datadir}/mondo
 for fname in mondo/common/my-stuff.h mondo/common/mondostructures.h mondo/common/libmondo-*-EXT.h mondo/common/X-specific-EXT.h mondo/common/newt-specific-EXT.h; do
-    %{__install} -m 644 $fname $RPM_BUILD_ROOT%{_includedir}/mondo
+	install $fname $RPM_BUILD_ROOT%{_includedir}/mondo
 done
 
-%post
-ldconfig
+%post	-p ldconfig
+%postun	-p ldconfig
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
@@ -167,11 +178,14 @@ ldconfig
 %{_mandir}/man8/mondoarchive.8*
 %{_libdir}
 
-%{!?_without_xmondo:%files xmondo}
-%{!?_without_xmondo:%{_sbindir}/xmondo}
-%{!?_without_xmondo:%{_libdir}/libXmondo-%{libversion}.so}
-%{!?_without_xmondo:%{_libdir}/libXmondo.so}
-%{!?_without_xmondo:%{_datadir}/mondo/mondo.png}
+%if %{with xmondo}
+%files xmondo
+%defattr(644,root,root,755)
+%{_sbindir}/xmondo
+%{_libdir}/libXmondo-%{libversion}.so
+%{_libdir}/libXmondo.so
+%{_datadir}/mondo/mondo.png
+%endif
 
 %files devel
 %defattr(644,root,root,755)
