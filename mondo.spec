@@ -45,6 +45,8 @@ Requires:	newt >= 0.50
 Requires:	parted
 Requires:	slang >= 1.4.1
 Requires:	syslinux >= 1.52
+Requires:	dosfstools
+Requires:	e2fsprogs
 #Requires:	buffer
 Autoreq:	0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
