@@ -9,9 +9,9 @@
 %bcond_with	xmondo
 
 Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
+Summary(es):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
 Summary(fr):	mondo - un programme pour les utilisateurs de Linux pour crï¿½r un CD/tape de sauvegarde/restauration
 Summary(it):	mondo - un programma per utenti Linux per creare un CD/tape di rescue
-Summary(sp):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
 Summary(pl):	mondo - program do tworzenia kopii zapasowych na CD/ta¶mie i odtwarzania z nich
 Name:		mondo
 Version:	2.10
@@ -21,11 +21,10 @@ Group:		Applications/Archiving
 Source0:	http://www.microwerks.net/~hugo/download/MondoCD/TGZS/%{name}-%{version}.tgz
 # Source0-md5:	91fa9d499c93d9fd535d84d7963bbbd8
 URL:		http://www.microwerks.net/~hugo/index.html
-BuildRequires:	gcc
 BuildRequires:	newt-devel >= 0.50
 BuildRequires:	slang-devel >= 1.4.1
 %if %{with xmondo}
-BuildRequires:	X11-devel
+BuildRequires:	XFree86-devel
 BuildRequires:	arts-devel
 BuildRequires:	gcc-c++
 BuildRequires:	kdelibs-devel
@@ -34,7 +33,6 @@ BuildRequires:	libpng-devel
 BuildRequires:	qt-devel
 %endif
 Requires:	afio
-Requires:	binutils
 Requires:	bzip2 >= 0.9
 Requires:	cdrtools-mkisofs
 Requires:	cdrtools
@@ -57,11 +55,6 @@ Objective """"""""" to produce a program which any Linux user can
 utilize to create a rescue/restore CD (or CDs, if their installation
 is >2Gb approx.). Also works for tapes and NFS.
 
-%description -l pl
-Program do robienia kopii zapasowych. Wspó³pracuje z CD-R(RW),
-streamerami, NFS, LVM, RAID, ext2, ext3, JFS, XFS, ReiserFS, VFAT,
-NTFS.
-
 %description -l es
 Objectivo """"""""" Mondo es un programa que permite cualquier usuario
 de Linux a crear una CD de restoracion/rescate (o CDs, si su
@@ -79,6 +72,11 @@ Scopo """"" Mondo e' un programma che permette a qualsiasi utente
 Linux di creare un cd di rescue/restore (o piu' cd qualora
 l'installazione dovesse occupare piu' di 2Gb circa). Funziona con gli
 azionamenti di nastro, ed il NFS, anche.
+
+%description -l pl
+Program do robienia kopii zapasowych. Wspó³pracuje z CD-R(RW),
+streamerami, NFS, LVM, RAID, ext2, ext3, JFS, XFS, ReiserFS, VFAT,
+NTFS.
 
 %package xmondo
 Summary:	A QT based graphical front end for mondo
@@ -169,10 +167,17 @@ done
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
+
+%post	xmondo -p /sbin/ldconfig
+%postun	xmondo -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog mondo/docs/en/*
 %attr(755,root,root) %{_sbindir}/mondo*
+%attr(755,root,root) %{_libdir}/libmondo*.so.*.*
 %dir %{_datadir}/mondo
 %{_datadir}/mondo/mondorestore
 %{_datadir}/mondo/post-nuke.sample
@@ -181,20 +186,19 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/mondo/mondoarchive
 %{_datadir}/mondo/autorun
 %{_mandir}/man8/mondoarchive.8*
-%attr(755,root,root) %{_libdir}/libmondo*.so.*.*
 
 %if %{with xmondo}
 %files xmondo
 %defattr(644,root,root,755)
-%{_sbindir}/xmondo
+%attr(755,root,root) %{_sbindir}/xmondo
 %attr(755,root,root) %{_libdir}/libXmondo-%{libversion}.so
 %{_datadir}/mondo/mondo.png
 %endif
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/mondo
-%{_libdir}/libmondo*.so
+%attr(755,root,root) %{_libdir}/libmondo*.so
 %if %{with xmondo}
-%{_libdir}/libXmondo.so
+%attr(755,root,root) %{_libdir}/libXmondo.so
 %endif
+%{_includedir}/mondo
