@@ -1,0 +1,36 @@
+diff -urN BUILD/mondo-2.10_cvs_20041202/configure BUILD/mondo-2.10_cvs_20041202/configure
+--- mondo-2.10_cvs_20041202/configure	2004-12-02 17:24:10.000000000 +0100
++++ mondo-2.10_cvs_20041202/configure	2005-01-05 08:25:01.000000000 +0100
+@@ -20974,7 +20974,7 @@
+ 
+ if test x$do_x = xyes ; then
+ 	XMONDO=xmondo
+-	QT_LIBRARY=-lqt
++	QT_LIBRARY=-lqt-mt
+ 	echo "$as_me:$LINENO: checking for X" >&5
+ echo $ECHO_N "checking for X... $ECHO_C" >&6
+ 
+diff -urN BUILD/mondo-2.10_cvs_20041202/configure.in BUILD/mondo-2.10_cvs_20041202/configure.in
+--- mondo-2.10_cvs_20041202/configure.in	2004-10-17 11:12:47.000000000 +0200
++++ mondo-2.10_cvs_20041202/configure.in	2005-01-05 08:24:25.000000000 +0100
+@@ -108,7 +108,7 @@
+ 
+ if test x$do_x = xyes ; then
+ 	XMONDO=xmondo
+-	QT_LIBRARY=-lqt
++	QT_LIBRARY=-lqt-mt
+ 	AC_PATH_XTRA
+ 	AC_FIND_BZIP2
+ 	KDE_CHECK_BINUTILS
+diff -urN BUILD/mondo-2.10_cvs_20041202/configure.pre BUILD/mondo-2.10_cvs_20041202/configure.pre
+--- mondo-2.10_cvs_20041202/configure.pre	2004-10-17 11:12:47.000000000 +0200
++++ mondo-2.10_cvs_20041202/configure.pre	2005-01-05 08:25:27.000000000 +0100
+@@ -9388,7 +9388,7 @@
+ 
+ if test x$do_x = xyes ; then
+ 	XMONDO=xmondo
+-	QT_LIBRARY=-lqt
++	QT_LIBRARY=-lqt-mt
+ 	echo "$as_me:$LINENO: checking for X" >&5
+ echo $ECHO_N "checking for X... $ECHO_C" >&6
+ 
