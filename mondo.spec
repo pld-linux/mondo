@@ -1,5 +1,6 @@
 # TODO:
 #	fix broken fr description encoding
+#	missing dep: mindi - not in PLD
 
 #%define	_prefix	/usr
 %define	libversion	2.0x_cvs
@@ -35,7 +36,7 @@ Requires:	afio
 Requires:	binutils
 Requires:	bzip2 >= 0.9
 Requires:	cdrtools-mkisofs
-Requires:	cdrtools-cdrecord
+Requires:	cdrtools
 %ifarch ia64
 Requires:	elilo
 %endif
@@ -157,8 +158,8 @@ for fname in mondo/common/my-stuff.h mondo/common/mondostructures.h mondo/common
 	install $fname $RPM_BUILD_ROOT%{_includedir}/mondo
 done
 
-%post	-p ldconfig
-%postun	-p ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %clean
 rm -rf $RPM_BUILD_ROOT
