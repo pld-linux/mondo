@@ -89,16 +89,17 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	qt
 
 %description xmondo
-Xmondo is a QT based graphical frontend to mondoarchive. It can help
+xmondo is a QT based graphical frontend to mondoarchive. It can help
 you set up a backup by following onscreen prompts.
 
 %description xmondo -l pl
-Xmondo jest graficzn± nak³adk± do mondoarchive opart± o QT.
+xmondo jest graficzn± nak³adk± do mondoarchive opart± o QT.
 
 %package devel
 Summary:	Header files for building against mondo
 Summary(pl):    Pliki nag³ówkowe bibliotek mondo
 Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 mondo-devel contains a few header files that are necessary for
@@ -171,27 +172,29 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog mondo/docs/en/*
-%attr(755,root,root) %{_sbindir}/mondorestore
-%attr(755,root,root) %{_sbindir}/mondoarchive
+%attr(755,root,root) %{_sbindir}/mondo*
 %dir %{_datadir}/mondo
 %{_datadir}/mondo/mondorestore
-%{_datadir}/mondo/post-nuke.sample/*
-%{_datadir}/mondo/restore-scripts/*
+%{_datadir}/mondo/post-nuke.sample
+%{_datadir}/mondo/restore-scripts
 %{_datadir}/mondo/do-not-compress-these
 %{_datadir}/mondo/mondoarchive
 %{_datadir}/mondo/autorun
 %{_mandir}/man8/mondoarchive.8*
-%{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/libmondo*.so.*.*
 
 %if %{with xmondo}
 %files xmondo
 %defattr(644,root,root,755)
 %{_sbindir}/xmondo
-%{_libdir}/libXmondo-%{libversion}.so
-%{_libdir}/libXmondo.so
+%attr(755,root,root) %{_libdir}/libXmondo-%{libversion}.so
 %{_datadir}/mondo/mondo.png
 %endif
 
 %files devel
 %defattr(644,root,root,755)
 %{_includedir}/mondo
+%{_libdir}/libmondo*.so
+%if %{with xmondo}
+%{_libdir}/libXmondo.so
+%endif
