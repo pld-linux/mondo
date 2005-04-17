@@ -6,6 +6,7 @@
 
 %define	libversion	2.0
 %define	__ln		ln
+%define cvsdate		20050321
 
 Summary:	mondo - a program which a Linux user can utilize to create a rescue/restore CD/tape
 Summary(es):	mondo - un programa para los usuarios de Linux por crear una CD/cinta de restoracion/rescate
@@ -13,17 +14,17 @@ Summary(fr):	mondo - un programme pour les utilisateurs de Linux pour crï¿½r un 
 Summary(it):	mondo - un programma per utenti Linux per creare un CD/tape di rescue
 Summary(pl):	mondo - program do tworzenia kopii zapasowych na CD/ta¶mie i odtwarzania z nich
 Name:		mondo
-Version:	2.10
+Version:	2.04
 Release:	1
 License:	GPL
 Group:		Applications/Archiving
-Source0:	http://www.microwerks.net/~hugo/download/MondoCD/TGZS/%{name}-%{version}.tgz
-# Source0-md5:	91fa9d499c93d9fd535d84d7963bbbd8
+Source0:	http://www.mondorescue.org/download/MondoCD/TGZS/%{name}-%{version}_cvs_%{cvsdate}.tgz
+# Source0-md5:	6c53f359c4f2187098ee828961a32763
 Patch0:		%{name}_lqt-mt.patch
 URL:		http://www.microwerks.net/~hugo/index.html
 BuildRequires:	newt-devel >= 0.50
 BuildRequires:	slang-devel >= 1.4.1
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	arts-devel
 BuildRequires:	gcc-c++
 BuildRequires:	kdelibs-devel
@@ -107,7 +108,7 @@ developing with mondo.
 Pliki nag³ówkowe bibliotek mondo.
 
 %prep
-%setup -q
+%setup -q -n %{name}-%{version}_cvs_%{cvsdate}
 %patch0 -p1
 # clear out any CVS directories if they exist
 #for dir in `find . -name CVS`
