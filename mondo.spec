@@ -32,6 +32,7 @@ BuildRequires:	libart_lgpl-devel
 BuildRequires:	libpng-devel
 BuildRequires:	qt-devel
 BuildRequires:	qt-st-devel
+BuildRequires:	bzip2-devel
 Requires:	afio
 Requires:	bzip2 >= 0.9
 Requires:	cdrtools-mkisofs
@@ -110,6 +111,7 @@ Pliki nag³ówkowe bibliotek mondo.
 %prep
 %setup -q -n %{name}-%{version}_cvs_%{cvsdate}
 %patch0 -p1
+
 # clear out any CVS directories if they exist
 #for dir in `find . -name CVS`
 #do
