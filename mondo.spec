@@ -110,7 +110,7 @@ Pliki nagłówkowe bibliotek mondo.
 
 %prep
 %setup -q -n %{name}-%{version}_cvs_%{cvsdate}
-%patch0 -p1
+%patch -P0 -p1
 
 # clear out any CVS directories if they exist
 #for dir in `find . -name CVS`
